@@ -1,0 +1,30 @@
+{
+  "login":{
+    "loginWithValidData":{
+      "userName":"ahmed.motair1234",
+      "password": "123456789"
+
+  },
+    "loginWithInvalidData":[
+      {
+        "userName": "ahmed.motair1234",
+        "password": "1234567894",
+        "fieldToBeValidated":"password"
+      },
+      {
+        "userName": "ahmed.mater124",
+        "password": "123456789",
+        "fieldToBeValidated":"userName"
+      },
+      {
+
+        "userName": "ahmed.mater124",
+        "password": "1234567894",
+        "fieldToBeValidated": "allFields"
+
+      }
+    ]
+  }
+
+
+}

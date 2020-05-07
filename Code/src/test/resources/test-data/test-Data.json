@@ -1,0 +1,37 @@
+{
+  "register": {
+    "registerNewUser": {
+      "fullName": "Ahmed Motair12",
+      "userName": "ahmed.motair1234",
+      "password": "123456789",
+      "confirmPassword": "123456789",
+      "email": "ahmed.motair123@gmail.com"
+    },
+    "registerInvalidUserData": [
+      {
+        "fullName": "Manal Mahmoud",
+        "userName": "Manal*Mahmud",
+        "password": "123456789",
+        "confirmPassword": "123456789",
+        "email": "Lola@gmail.com",
+        "fieldToBeValidated": "username"
+      },
+      {
+        "fullName": "Manal Mahmoud",
+        "userName": "Manal-Mahmud",
+        "password": "123456789",
+        "confirmPassword": "123456789",
+        "email": "M.Mah%$moud@gmail.com",
+        "fieldToBeValidated": "email"
+      },
+      {
+        "fullName": "     *     ",
+        "userName": "    _    ",
+        "password": "        @",
+        "confirmPassword": "        @",
+        "email": "     @gmail.com",
+        "fieldToBeValidated": "allFields"
+      }
+    ]
+  }
+}
