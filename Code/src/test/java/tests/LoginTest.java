@@ -23,7 +23,7 @@ public class LoginTest extends TestBase {
     HomePage homePage;
 
     @Override
-    void setJSONFileName() {
+    protected void setJSONFileName() {
         this.FILE_NAME = "test-data-login.json";
     }
 
@@ -122,4 +122,10 @@ public class LoginTest extends TestBase {
 
 
         }
-    }}
+    }
+
+
+
+
+
+}

@@ -1,8 +1,11 @@
 package tests;
 
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -21,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class TestBase {
     public static WebDriver driver = null;
     public String FILE_NAME;
-    JSONObject data;
-    JDBCAdapter jdbc;
+    protected JSONObject data;
+    protected JDBCAdapter jdbc;
 
     @BeforeClass
     public void initialize() throws IOException, SQLException, ClassNotFoundException {
@@ -48,7 +51,7 @@ public abstract class TestBase {
         jdbc.initConnection();
     }
 
-    abstract void setJSONFileName();
+    protected abstract void setJSONFileName();
 
     @AfterClass
     //Test cleanup
@@ -64,6 +67,31 @@ public abstract class TestBase {
                 this.FILE_NAME);//"test-Data.json");
         //Read JSON file
         Object obj = jsonParser.parse(reader);
-        return  obj;
+        return obj;
     }
+
+
+
+
+    public  void takeScreenshot(WebDriver webdriver,String filename) throws Exception{
+
+        //Convert web driver object to TakeScreenshot
+
+        TakesScreenshot scrShot =((TakesScreenshot)webdriver);
+
+        //Call getScreenshotAs method to create image file
+
+        File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
+
+        //Move image file to new destination
+
+        File DestFile=new File("E:\\Work\\Projects\\TELCOP-Automation\\trunk\\Code\\Screenshots\\"+filename);
+
+        //Copy file at destination
+
+        FileUtils.copyFile(SrcFile, DestFile);
+
+    }
+
+
 }

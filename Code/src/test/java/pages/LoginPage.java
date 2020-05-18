@@ -1,5 +1,6 @@
 package pages;
 
+import org.json.simple.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.XpiDriverService;
@@ -9,6 +10,7 @@ public class LoginPage extends PageBase {
     public LoginPage(WebDriver driver) {
         super(driver);
     }
+
 
     @FindBy(xpath = "//a[@href=\"/register\"]")
     WebElement registerLink;
@@ -51,6 +53,7 @@ public class LoginPage extends PageBase {
             return false;
         }
     }
+
     public boolean isErrorMSgUserNameIsDisplayed() {
 
         if (errorMsguserName.isDisplayed()) {
@@ -68,7 +71,15 @@ public class LoginPage extends PageBase {
         passwordText.clear();
 
 
+    }
 
+
+    public void login(String userName, String password) {
+
+        driver.navigate().to("http://localhost:9120/login");
+        setUserName(userName);
+        setPassword(password);
+        clickLogin();
     }
 }
 

@@ -2,8 +2,13 @@ package pages;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,5 +25,35 @@ public class PageBase {
 
     }
 
+    public static void   setText(WebElement text, String value) {
+
+        text.sendKeys(value);
+
+    }
+
+    public  static void setPassword(WebElement password, String value) {
+        password.sendKeys(value);
+
+    }
+
+    public static void clickButton(WebElement btn){
+
+        btn.click();
+    }
+    public static void selectOption(WebElement selectElement, String value){
+        if(value != null) {
+            Select statusDropdown = new Select(selectElement);
+            statusDropdown.selectByVisibleText(value);
+        }
+
+    }
+    // find error by id and assert fail if the error message isn't found
+    public void assertElementErrorMsg(String tagID){
+        try {
+            WebElement element = driver.findElement(By.id(tagID));
+        } catch (NoSuchElementException ex){
+            Assert.fail("Error Message with ID: " + tagID + " isn't found");
+        }
+    }
 
 }

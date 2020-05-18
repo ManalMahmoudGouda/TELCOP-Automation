@@ -106,7 +106,7 @@ public class RegisterationTest extends TestBase {
     }
 
     @Override
-    void setJSONFileName() {
+    protected void setJSONFileName() {
         this.FILE_NAME = "test-Data.json";
     }
 }

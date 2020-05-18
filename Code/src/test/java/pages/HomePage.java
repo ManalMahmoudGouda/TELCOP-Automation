@@ -10,7 +10,12 @@ public class HomePage extends PageBase {
     }
     @FindBy(xpath = "//span[contains(@class,'admin-name')]")
     WebElement userName;
-     public boolean userNameIsDisplayed(){
+    @FindBy(xpath = "//a[text() = ' Course ']")
+    public WebElement course;
+    @FindBy(xpath = "//a[text() = ' New Course ']")
+    public WebElement newCourse;
+
+    public boolean userNameIsDisplayed(){
 
         if( userName.isDisplayed())
             return true;

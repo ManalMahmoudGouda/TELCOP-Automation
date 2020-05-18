@@ -1,0 +1,41 @@
+{
+  "createCourse":{
+
+
+    "courseTitle":"Api Testing",
+    "duration":"150",
+    "categoryName":"Computer Science",
+    "courseType":"Academic",
+    "courseLevel":"Intermediate",
+    "courseLanguage":"Arabic",
+    "startDate":"15/5/2020",
+    "description":"This course provide introduction to api testing",
+    "userName":"ahmed.motair",
+    "password":"12345678"
+
+
+
+  },
+  "CreateCourseWithInvalidData": {
+    "loginCredentials": {
+      "userName":"ahmed.motair",
+      "password":"12345678"
+    },
+    "data" : [
+      {
+        "courseTitle": " ",
+        "duration": " ",
+        "categoryName": " ",
+        "courseType": null,
+        "courseLevel": null,
+        "courseLanguage": null,
+        "startDate": " ",
+        "description": " ",
+        "errorMsgIds":"corTitle_ValDiv_emptyStr_en,duration_ValDiv_required_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,expectedFinishedDate_ValDiv_required_en,categoryName_ValDiv_emptyStr_en"
+      }
+        ]
+  }
+
+
+
+}

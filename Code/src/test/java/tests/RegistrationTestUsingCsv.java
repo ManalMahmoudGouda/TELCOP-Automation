@@ -21,7 +21,7 @@ public class RegistrationTestUsingCsv extends TestBase {
     LoginPage login;
 
     @Override
-    void setJSONFileName() {
+    protected void setJSONFileName() {
         this.FILE_NAME = "test-Data.json";
     }
 
