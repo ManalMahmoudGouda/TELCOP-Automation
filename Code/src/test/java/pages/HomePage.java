@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import javax.xml.ws.WebEndpoint;
+
 public class HomePage extends PageBase {
     public HomePage(WebDriver driver) {
         super(driver);
@@ -14,6 +16,12 @@ public class HomePage extends PageBase {
     public WebElement course;
     @FindBy(xpath = "//a[text() = ' New Course ']")
     public WebElement newCourse;
+   // @FindBy(className = "")
+    @FindBy(xpath= "//i[contains(@class, 'fa fa-sign-out')]")
+    public WebElement btnSignOut;
+    @FindBy(xpath= "//i[contains(@class, 'fa fa-angle-down mg-l-1')]")
+    //i[contains(@class, 'fa fa-angle-down mg-l-1')]
+    public WebElement profileDropDownList;
 
     public boolean userNameIsDisplayed(){
 
@@ -23,4 +31,10 @@ public class HomePage extends PageBase {
             return false;
 
      }
+
+     public void signOut(){
+        profileDropDownList.click();
+        btnSignOut.click();
+     }
+
 }
