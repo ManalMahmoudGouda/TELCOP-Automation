@@ -37,7 +37,6 @@ public class PageBase {
     }
 
     public static void clickButton(WebElement btn){
-
         btn.click();
     }
     public static void selectOption(WebElement selectElement, String value){
@@ -46,14 +45,6 @@ public class PageBase {
             statusDropdown.selectByVisibleText(value);
         }
 
-    }
-    // find error by id and assert fail if the error message isn't found
-    public void assertElementErrorMsg(String tagID){
-        try {
-            WebElement element = driver.findElement(By.id(tagID));
-        } catch (NoSuchElementException ex){
-            Assert.fail("Error Message with ID: " + tagID + " isn't found");
-        }
     }
 
 }

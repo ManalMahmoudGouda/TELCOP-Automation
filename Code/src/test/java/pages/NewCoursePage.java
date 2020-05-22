@@ -36,6 +36,7 @@ public class NewCoursePage extends PageBase{
 
 
     @FindBy(xpath = "//button[@class=\"btn btn-success\"]")
+   // @FindBy(id = "createBtn21")
     public WebElement btnCreate;
 
     @FindBy(className = "btn btn-danger")
