@@ -36,11 +36,11 @@ public class RegistrationTestUsingCsv extends TestBase {
         driver.navigate().to("http://localhost:9120/login");
         login.clickRegisterLink();
         //get path of csv file
-        String CSV_file = System.getProperty("user.dir")+"\\src\\test\\resources\\test-data\\Login-test-data.csv";
+        String CSV_file = System.getProperty("user.dir") + "\\src\\test\\resources\\test-data\\Login-test-data.csv";
 
         reader = new CSVReader(new FileReader(CSV_file));
-        String[] csvCell ;
-        while ((csvCell = reader.readNext())!= null) {
+        String[] csvCell;
+        while ((csvCell = reader.readNext()) != null) {
             String fullName = csvCell[0];
             String userName = csvCell[1];
             String password = csvCell[2];
@@ -54,20 +54,19 @@ public class RegistrationTestUsingCsv extends TestBase {
             register.setEmailTxt(email);
 
             register.clickRegisterBtn();
-            switch (fieldToBeVlidate){
+            switch (fieldToBeVlidate) {
                 case "UserName":
                     Assert.assertTrue(register.isEmailAndUserNameUnique(), "Username Error Message isn't displayed");
-                    Assert.assertEquals(register.getErrorAlertText(),"Username or Email already existed","error msg for unique name isn't correct");
+                    Assert.assertEquals(register.getErrorAlertText(), "Username or Email already existed", "error msg for unique name isn't correct");
                     register.closeAlert();
                     break;
                 case "Email":
-                    Assert.assertTrue(register.isEmailAndUserNameUnique(),"Email Error Message isn't displayed");
-                    Assert.assertEquals(register.getErrorAlertText(),"Username or Email already existed","error msg for unique email isn't correct");
+                    Assert.assertTrue(register.isEmailAndUserNameUnique(), "Email Error Message isn't displayed");
+                    Assert.assertEquals(register.getErrorAlertText(), "Username or Email already existed", "error msg for unique email isn't correct");
                     register.closeAlert();
                     break;
 
             }
-
 
 
             Thread.sleep(5000);
