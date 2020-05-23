@@ -1,5 +1,7 @@
 package tests.course;
 
+import database.CreateCourseDB;
+import org.fluttercode.datafactory.impl.DataFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -8,32 +10,45 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.*;
 import tests.TestBase;
+import util.JDBCAdapter;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateCourseTC extends TestBase {
 
     @Override
     protected void setJSONFileName() {
-        this.FILE_NAME = "course\\create-course-data.json";
+        this.FILE_NAME = "course/create-course-data.json";
     }
 
     private LoginPage login;
-    private NewCoursePage coursePage;
+//    private NewCoursePage NewCoursePage coursePage;
     private HomePage home;
     private RequestDetailsPage details;
 
-    @Test()
-    public void createNewCourseUsingValidData() throws Exception {
-        login = new LoginPage(driver);
-        JSONObject tcData = (JSONObject) this.data.get("createCourse");
-        login.login((String) tcData.get("userName"), (String) tcData.get("password"));
+    private void loginToCreateCoursePage(){
+        login = new LoginPage(driver, this.getAppURL());
+        JSONObject loginCredentials = (JSONObject) this.data.get("instructorUser");
+        login.login((String) loginCredentials.get("userName"), (String) loginCredentials.get("password"));
 
         home = new HomePage(driver);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOf(home.course));
         PageBase.clickButton(home.course);
         PageBase.clickButton(home.newCourse);
+    }
 
-        coursePage = new NewCoursePage(driver);
+    @Test()
+    public void createNewCourseUsingValidData() throws Exception {
+        this.loginToCreateCoursePage();
+
+        JSONObject tcData = (JSONObject) this.data.get("createCourse");
+        NewCoursePage coursePage = new NewCoursePage(driver);
         PageBase.setText(coursePage.courseTitle, (String) tcData.get("courseTitle"));
         PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
         PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
@@ -44,7 +59,6 @@ public class CreateCourseTC extends TestBase {
         PageBase.setText(coursePage.description, (String) tcData.get("description"));
         PageBase.clickButton(coursePage.btnCreate);
 
-        //  takeScreenshot(driver, "newCourse");
         details = new RequestDetailsPage(driver);
         Assert.assertTrue(details.requestDetailsIsDisplayed(), "Request Details isn't displayed");
         home.signOut();
@@ -52,18 +66,10 @@ public class CreateCourseTC extends TestBase {
 
     @Test(dependsOnMethods = {"createNewCourseUsingValidData"})
     public void validateDuplicateCourseWithSameInstructor() throws Exception {
-        login = new LoginPage(driver);
-        JSONObject instructorUser = (JSONObject) this.data.get("instructorUser");
-        login.login((String) instructorUser.get("userName"), (String) instructorUser.get("password"));
-
-        home = new HomePage(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOf(home.course));
-        PageBase.clickButton(home.course);
-        PageBase.clickButton(home.newCourse);
+        this.loginToCreateCoursePage();
 
         JSONObject tcData = (JSONObject) this.data.get("validateDuplicateCourseWithSameInstructor");
-        coursePage = new NewCoursePage(driver);
+        NewCoursePage coursePage = new NewCoursePage(driver);
         PageBase.setText(coursePage.courseTitle, (String) tcData.get("courseTitle"));
         PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
         PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
@@ -80,22 +86,13 @@ public class CreateCourseTC extends TestBase {
 
     @Test()
     public void createNewCourseUsingInValidData() throws Exception {
-        login = new LoginPage(driver);
-        JSONObject tcData = (JSONObject) this.data.get("CreateCourseWithInvalidData");
-        JSONObject loginCredentials = (JSONObject) tcData.get("loginCredentials");
-        JSONArray data = (JSONArray) tcData.get("data");
-        login.login((String) loginCredentials.get("userName"), (String) loginCredentials.get("password"));
+        this.loginToCreateCoursePage();
 
-        home = new HomePage(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOf(home.course));
-        PageBase.clickButton(home.course);
-        PageBase.clickButton(home.newCourse);
-        for (int i = 0; i < data.size(); i++) {
+        JSONArray tcDataArray = (JSONArray) this.data.get("CreateCourseWithInvalidData");
+        for (int i = 0; i < tcDataArray.size(); i++) {
+            JSONObject courseData = (JSONObject) tcDataArray.get(i);
 
-            JSONObject courseData = (JSONObject) data.get(i);
-
-            coursePage = new NewCoursePage(driver);
+            NewCoursePage coursePage = new NewCoursePage(driver);
             PageBase.setText(coursePage.courseTitle, (String) courseData.get("courseTitle"));
             PageBase.setText(coursePage.duration, (String) courseData.get("duration"));
             PageBase.setText(coursePage.categoryName, (String) courseData.get("categoryName"));
@@ -118,17 +115,9 @@ public class CreateCourseTC extends TestBase {
 
     @Test()
     public void validateMandatoryField() throws Exception {
-        login = new LoginPage(driver);
-        JSONObject instructorUser = (JSONObject) this.data.get("instructorUser");
-        login.login((String) instructorUser.get("userName"), (String) instructorUser.get("password"));
+        this.loginToCreateCoursePage();
 
-        home = new HomePage(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOf(home.course));
-        PageBase.clickButton(home.course);
-        PageBase.clickButton(home.newCourse);
-
-        coursePage = new NewCoursePage(driver);
+        NewCoursePage coursePage = new NewCoursePage(driver);
         PageBase.clickButton(coursePage.btnCreate);
 
         JSONObject mandatoryData = (JSONObject) this.data.get("validateMandatoryField");
@@ -142,19 +131,11 @@ public class CreateCourseTC extends TestBase {
 
     @Test()
     public void validateDurationFieldWithDecimalValue() throws Exception {
-
-        login = new LoginPage(driver);
-        JSONObject instructorUser = (JSONObject) this.data.get("instructorUser");
-        login.login((String) instructorUser.get("userName"), (String) instructorUser.get("password"));
-
-        home = new HomePage(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.visibilityOf(home.course));
-        PageBase.clickButton(home.course);
-        PageBase.clickButton(home.newCourse);
+        this.loginToCreateCoursePage();
 
         JSONObject tcData = (JSONObject) this.data.get("validateDurationField");
-        coursePage = new NewCoursePage(driver);
+        NewCoursePage coursePage = new NewCoursePage(driver);
+
         PageBase.setText(coursePage.courseTitle, (String) tcData.get("courseTitle"));
         PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
         PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
@@ -170,4 +151,51 @@ public class CreateCourseTC extends TestBase {
         home.signOut();
     }
 
+    @Test()
+    public void validateMaxLimitOfCreateNewCourses() throws Exception {
+        this.loginToCreateCoursePage();
+        JSONObject tcData = (JSONObject) this.data.get("tc-validateMaxLimitOfCreateNewCourses");
+
+        CreateCourseDB db = new CreateCourseDB();
+        String configID = (String) tcData.get("maxLimitConfigurationID");
+        Integer maxLimit = db.getMaxLimitOfNewCourseConfiguration(this.jsonConfig, configID);
+
+        JSONObject loginCredentials = (JSONObject) this.data.get("instructorUser");
+        Integer count = db.countOfUnCompletedCourses(jsonConfig, (String) loginCredentials.get("userID"));
+
+        Integer diff = maxLimit - count;
+        DataFactory dataFactory = new DataFactory();
+
+        NewCoursePage coursePage = new NewCoursePage(driver);
+
+        for(int i=0; i<diff; i++){
+            // Random Course Title
+            String courseTitle = dataFactory.getRandomWord(5, 150);
+            PageBase.setText(coursePage.courseTitle, courseTitle);
+
+            PageBase.setText(coursePage.duration, "50");
+            PageBase.setText(coursePage.categoryName, "Testing Category");
+            PageBase.selectOption(coursePage.courseType, "Practical");
+            PageBase.selectOption(coursePage.courseLevel, "Intermediate");
+            PageBase.selectOption(coursePage.courseLanguauge, "English");
+            coursePage.setExpectedFinishDate();
+
+            PageBase.clickButton(coursePage.btnCreate);
+        }
+
+        // Random Course Title
+        String courseTitle = dataFactory.getRandomWord(25, 150);
+        PageBase.setText(coursePage.courseTitle, courseTitle);
+
+        PageBase.setText(coursePage.duration, "50");
+        PageBase.setText(coursePage.categoryName, "Testing Category");
+        PageBase.selectOption(coursePage.courseType, "Practical");
+        PageBase.selectOption(coursePage.courseLevel, "Intermediate");
+        PageBase.selectOption(coursePage.courseLanguauge, "English");
+        coursePage.setExpectedFinishDate();
+
+        PageBase.clickButton(coursePage.btnCreate);
+
+        this.assertAlertError((String) tcData.get("Instructor has reached his max limit of creating new Courses"));
+    }
 }

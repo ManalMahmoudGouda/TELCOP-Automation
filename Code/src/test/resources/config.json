@@ -1,5 +1,22 @@
 {
   "chromeDriverPath": "src/test/resources/chromedriver_ver_81.exe",
   "applicationURL": "http://localhost:4500",
-  "screenshotsPath": "src/../Bugs-Screenshots/"
+  "screenshotsPath": "src/../Bugs-Screenshots/",
+  "database": {
+    "userIdentity": {
+      "jdbcURL": "jdbc:mysql://localhost:3306/ams_user_id",
+      "username": "root",
+      "password": "root"
+    },
+    "sysConfig": {
+      "jdbcURL": "jdbc:mysql://localhost:3306/ams_sys_configuration",
+      "username": "root",
+      "password": "root"
+    },
+    "telcopDorrar": {
+      "jdbcURL": "jdbc:mysql://localhost:3306/telcop_dorrar",
+      "username": "root",
+      "password": "root"
+    }
+  }
 }

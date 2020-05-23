@@ -11,6 +11,9 @@ public class LoginPage extends PageBase {
         super(driver);
     }
 
+    public LoginPage(WebDriver driver, String appURL) {
+        super(driver, appURL);
+    }
 
     @FindBy(xpath = "//a[@href=\"/register\"]")
     WebElement registerLink;
@@ -76,7 +79,7 @@ public class LoginPage extends PageBase {
 
     public void login(String userName, String password) {
 
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.URL + "/login");
         setUserName(userName);
         setPassword(password);
         clickLogin();

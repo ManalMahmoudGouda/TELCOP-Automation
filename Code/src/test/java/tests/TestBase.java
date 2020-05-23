@@ -24,14 +24,12 @@ public abstract class TestBase {
     public static WebDriver driver = null;
     public String FILE_NAME;
     protected JSONObject data;
-    private JSONObject config;
-
-    protected JDBCAdapter jdbc;
+    protected JSONObject jsonConfig;
 
     @BeforeClass
     public void initialize() throws IOException, SQLException, ClassNotFoundException, ParseException {
-        this.config = (JSONObject) this.readJson("src/test/resources/config.json");
-        String driverPath = (String) config.get("chromeDriverPath");
+        this.jsonConfig = (JSONObject) this.readJson("src/test/resources/config.json");
+        String driverPath = (String) this.jsonConfig.get("chromeDriverPath");
         Map<String, Object> prefs = new HashMap<String, Object>();
         prefs.put("profile.default_content_setting_values.notifications", 2);
 
@@ -50,9 +48,6 @@ public abstract class TestBase {
             e.printStackTrace();
         }
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
-        jdbc = new JDBCAdapter();
-        jdbc.initConnection();
     }
 
     protected abstract void setJSONFileName();
@@ -60,7 +55,7 @@ public abstract class TestBase {
     //Test cleanup
     @AfterClass
     public void TeardownTest() {
-        TestBase.driver.quit();
+//        TestBase.driver.quit();
     }
 
     private Object readJson() throws IOException, ParseException {
@@ -88,7 +83,7 @@ public abstract class TestBase {
         File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
 
         //Move image file to new destination
-        File DestFile=new File(this.config.get("screenshotsPath") + filename + ".png");
+        File DestFile=new File(this.jsonConfig.get("screenshotsPath") + filename + ".png");
 
         //Copy file at destination
         FileUtils.copyFile(SrcFile, DestFile);
@@ -122,6 +117,6 @@ public abstract class TestBase {
     }
 
     public String getAppURL(){
-        return (String) this.config.get("applicationURL");
+        return (String) this.jsonConfig.get("applicationURL");
     }
 }

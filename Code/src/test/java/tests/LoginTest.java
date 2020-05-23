@@ -19,10 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-@Listeners
 public class LoginTest extends TestBase {
-    LoginPage login;
-    HomePage homePage;
+    private LoginPage login;
+    private HomePage homePage;
 
     @Override
     protected void setJSONFileName() {
@@ -32,7 +31,8 @@ public class LoginTest extends TestBase {
     @BeforeMethod
     public void checkIsUserExist() throws SQLException, ClassNotFoundException {
         System.out.println("Before Method");
-        Connection con = jdbc.getCon();
+        JDBCAdapter jdbc = new JDBCAdapter();
+        Connection con = jdbc.getUserIdentityConnection(this.jsonConfig);
 
         JSONObject _login = (JSONObject) this.data.get("login");
         JSONObject loginTestCase = (JSONObject) _login.get("loginWithValidData");
@@ -71,6 +71,7 @@ public class LoginTest extends TestBase {
         }
         resultSet.close();
         stm.close();
+        con.close();
 
     }
 

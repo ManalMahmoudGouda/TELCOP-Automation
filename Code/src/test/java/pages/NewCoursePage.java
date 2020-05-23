@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class NewCoursePage extends PageBase{
     public NewCoursePage(WebDriver driver) {
         super(driver);
@@ -42,5 +45,10 @@ public class NewCoursePage extends PageBase{
     @FindBy(className = "btn btn-danger")
     public WebElement btnClear;
 
+    public void setExpectedFinishDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String expectedFinishDate = sdf.format(new Date((new Date().getTime() + 172800)));
+        this.startDate.sendKeys(expectedFinishDate);
+    }
 
 }
