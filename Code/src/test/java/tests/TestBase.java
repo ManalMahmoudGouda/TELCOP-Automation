@@ -24,19 +24,24 @@ public abstract class TestBase {
     public static WebDriver driver = null;
     public String FILE_NAME;
     protected JSONObject data;
+    private JSONObject config;
+
     protected JDBCAdapter jdbc;
 
     @BeforeClass
-    public void initialize() throws IOException, SQLException, ClassNotFoundException {
-
+    public void initialize() throws IOException, SQLException, ClassNotFoundException, ParseException {
+        this.config = (JSONObject) this.readJson("src/test/resources/config.json");
+        String driverPath = (String) config.get("chromeDriverPath");
         Map<String, Object> prefs = new HashMap<String, Object>();
         prefs.put("profile.default_content_setting_values.notifications", 2);
+
         // Create object of ChromeOption class
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
-        System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver_ver_81.exe");
+        options.setPageLoadStrategy(PageLoadStrategy.NONE);
+        System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver(options);
-//        driver.manage().window().maximize();
+        driver.manage().window().maximize();
 
         try {
             this.setJSONFileName();
@@ -52,25 +57,28 @@ public abstract class TestBase {
 
     protected abstract void setJSONFileName();
 
-    @AfterClass
     //Test cleanup
+    @AfterClass
     public void TeardownTest() {
-//        TestBase.driver.quit();
+        TestBase.driver.quit();
     }
 
+    private Object readJson() throws IOException, ParseException {
+        return this.readJson(null);
+    }
 
-    public Object readJson() throws IOException, ParseException {
+    private Object readJson(String filePath) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
-        FileReader reader = new FileReader("E:\\Work\\Projects\\TELCOP-Automation\\trunk\\Code" +
-                "\\src\\test\\resources\\test-data\\" +
-                this.FILE_NAME);//"test-Data.json");
+        FileReader reader;
+
+        if(filePath == null)
+            reader = new FileReader("src/test/resources/test-data/" + this.FILE_NAME);
+        else
+            reader = new FileReader(filePath);
+
         //Read JSON file
-        Object obj = jsonParser.parse(reader);
-        return obj;
+        return jsonParser.parse(reader);
     }
-
-
-
 
     public  void takeScreenshot(WebDriver webdriver,String filename) throws Exception{
         //Convert web driver object to TakeScreenshot
@@ -80,12 +88,11 @@ public abstract class TestBase {
         File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
 
         //Move image file to new destination
-        File DestFile=new File("E:\\Work\\Projects\\TELCOP-Automation\\trunk\\Code\\Screenshots\\" + filename + ".png");
+        File DestFile=new File(this.config.get("screenshotsPath") + filename + ".png");
 
         //Copy file at destination
         FileUtils.copyFile(SrcFile, DestFile);
     }
-
 
     // find error by id and assert fail if the error message isn't found
     public void assertElementErrorMsg(String tagID) throws Exception {
@@ -112,5 +119,9 @@ public abstract class TestBase {
             takeScreenshot(driver, "Error_Alert_Not_Found");
             Assert.assertEquals("Error Message isn't displayed", "Error Msg with Text '" + expectedErrMsg + "'");
         }
+    }
+
+    public String getAppURL(){
+        return (String) this.config.get("applicationURL");
     }
 }

@@ -46,7 +46,7 @@ public class LoginTest extends TestBase {
         if(!resultSet.first()){
 
             //Create User using Register
-            driver.navigate().to("http://localhost:9120/register");
+            driver.navigate().to(this.getAppURL() + "/register");
             RegistrationPage register = new RegistrationPage(driver);
             register.setFullName("Ahmed Mater");
             register.setUsername(username);
@@ -76,11 +76,11 @@ public class LoginTest extends TestBase {
 
 
     @Test
-    public void loginUsingValidData() {
+    public void loginUsingValidData() throws Exception {
         System.out.println("Test Execution");
         login = new LoginPage(driver);
 
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.getAppURL() + "/login");
 
         JSONObject _login = (JSONObject) this.data.get("login");
         JSONObject loginTestCase = (JSONObject) _login.get("loginWithValidData");
@@ -89,6 +89,7 @@ public class LoginTest extends TestBase {
 
         login.clickLogin();
         homePage = new HomePage(driver);
+        this.takeScreenshot(driver, "Login-Success");
 //        Assert.assertTrue(homePage.userNameIsDisplayed(), "user name isn't displayed");
     }
 
@@ -97,7 +98,7 @@ public class LoginTest extends TestBase {
 
         login = new LoginPage(driver);
 
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.getAppURL() + "/login");
         JSONObject _login = (JSONObject) this.data.get("login");
         JSONArray testCaseArr = (JSONArray) _login.get("loginWithInvalidData");
         for (int i = 0; i < testCaseArr.size(); i++) {

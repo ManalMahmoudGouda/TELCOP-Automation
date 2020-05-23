@@ -33,7 +33,7 @@ public class RegistrationTestUsingCsv extends TestBase {
         login = new LoginPage(driver);
         register = new RegistrationPage(driver);
 
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.getAppURL() + "/login");
         login.clickRegisterLink();
         //get path of csv file
         String CSV_file = System.getProperty("user.dir") + "\\src\\test\\resources\\test-data\\Login-test-data.csv";

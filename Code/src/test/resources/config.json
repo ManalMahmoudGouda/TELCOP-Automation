@@ -1,0 +1,5 @@
+{
+  "chromeDriverPath": "src/test/resources/chromedriver_ver_81.exe",
+  "applicationURL": "http://localhost:4500",
+  "screenshotsPath": "src/../Bugs-Screenshots/"
+}

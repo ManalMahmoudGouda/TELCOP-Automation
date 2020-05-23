@@ -29,7 +29,7 @@ public class RegisterationTest extends TestBase {
     @Test(priority = 1)
     public void registerNewUser() throws InterruptedException, IOException, ParseException {
         login = new LoginPage(driver);
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.getAppURL() + "/login");
         login.clickRegisterLink();
 
         register = new RegistrationPage(driver);
@@ -46,7 +46,7 @@ public class RegisterationTest extends TestBase {
         register.clickRegisterBtn();
         // driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
         Thread.sleep(30000);
-//        Assert.assertEquals(driver.getCurrentUrl(), "http://localhost:9120/login",
+//        Assert.assertEquals(driver.getCurrentUrl(), this.getAppURL() + "/login",
 //                "Register doesn't navigate to Login Page");
     }
 
@@ -54,7 +54,7 @@ public class RegisterationTest extends TestBase {
     @Test(priority = 2)
     public void registerInvalidUserData() throws InterruptedException {
         login = new LoginPage(driver);
-        driver.navigate().to("http://localhost:9120/login");
+        driver.navigate().to(this.getAppURL() + "/login");
         login.clickRegisterLink();
 
 
