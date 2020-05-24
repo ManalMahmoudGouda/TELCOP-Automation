@@ -25,11 +25,13 @@ public class ProfileRequestTabTC extends TestBase {
     }
 
     private ProfileRequestTab loginToProfileRequestTab(){
+        HomePage home = new HomePage(driver, this.getAppURL());
+        home.signOutIfLoggedIn();
+
         LoginPage login = new LoginPage(driver, this.getAppURL());
         JSONObject loginCredentials = (JSONObject) this.data.get("instructorUser");
         login.login((String) loginCredentials.get("userName"), (String) loginCredentials.get("password"));
 
-        HomePage home = new HomePage(driver);
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOf(home.profileDropDownList));
         PageBase.clickButton(home.profileDropDownList);
@@ -82,7 +84,7 @@ public class ProfileRequestTabTC extends TestBase {
     }
 
     @Test
-    public void filterWithRequestID() throws InterruptedException {
+    public void filterWithRequestTitle() throws InterruptedException {
         ProfileRequestTab requestsTab = this.loginToProfileRequestTab();
         Assert.assertTrue(requestsTab.requestsRows.size() > 0, "No Requests appear in Request List");
 
@@ -94,6 +96,11 @@ public class ProfileRequestTabTC extends TestBase {
         PageBase.clickButton(requestsTab.searchBtn);
 
         Thread.sleep(5000);
-        Assert.assertEquals(1, requestsTab.requestsRows.size(), "Requests retrieved must be one request only");
+        Assert.assertTrue(requestsTab.requestsRows.size() > 0, "No Requests retrieved in the list");
+
+        for(WebElement row: requestsTab.requestsRows)
+            Assert.assertTrue(row.findElement(By.tagName("td")).getText().matches(".*(" + firstRowReqTitle + ").*"),
+                    "Row has request with title doesn't contains '" + firstRowReqTitle + "'");
+
     }
 }

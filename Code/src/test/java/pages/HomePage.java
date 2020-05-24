@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,8 +13,12 @@ public class HomePage extends PageBase {
         super(driver);
     }
 
+    public HomePage(WebDriver driver, String appURL) {
+        super(driver, appURL);
+    }
+
     @FindBy(xpath = "//span[contains(@class,'admin-name')]")
-    WebElement userName;
+    public WebElement userName;
     @FindBy(xpath = "//a[text() = ' Course ']")
     public WebElement course;
     @FindBy(xpath = "//a[text() = ' New Course ']")
@@ -26,7 +31,6 @@ public class HomePage extends PageBase {
     public WebElement profileAnchor;
 
     @FindBy(xpath = "//i[contains(@class, 'fa fa-angle-down mg-l-1')]")
-    //i[contains(@class, 'fa fa-angle-down mg-l-1')]
     public WebElement profileDropDownList;
 
     public boolean userNameIsDisplayed() {
@@ -38,4 +42,15 @@ public class HomePage extends PageBase {
         signoutAnchor.click();
     }
 
+    public void signOutIfLoggedIn(){
+        driver.navigate().to(this.URL + "/");
+        try{
+            if(userName.isDisplayed()){
+                profileDropDownList.click();
+                signoutAnchor.click();
+            }
+        } catch (NoSuchElementException ex){
+            return;
+        }
+    }
 }

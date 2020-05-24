@@ -4,9 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ProfileRequestTabPage extends UserProfilePage {
+public class ProfileRequestTab extends UserProfilePage {
 
-    public ProfileRequestTabPage(WebDriver driver) {
+    public ProfileRequestTab(WebDriver driver) {
         super(driver);
     }
 
