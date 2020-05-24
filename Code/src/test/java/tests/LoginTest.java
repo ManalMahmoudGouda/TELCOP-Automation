@@ -1,5 +1,7 @@
 package tests;
 
+import database.course.CreateCourseDB;
+import database.security.LoginDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
@@ -22,6 +24,11 @@ import java.sql.Statement;
 public class LoginTest extends TestBase {
     private LoginPage login;
     private HomePage homePage;
+    private LoginDB loginDB = new LoginDB(this.jsonConfig);
+
+    public LoginTest() throws SQLException, ClassNotFoundException {
+    }
+
 
     @Override
     protected void setJSONFileName() {
@@ -31,20 +38,14 @@ public class LoginTest extends TestBase {
     @BeforeMethod
     public void checkIsUserExist() throws SQLException, ClassNotFoundException {
         System.out.println("Before Method");
-        JDBCAdapter jdbc = new JDBCAdapter();
-        Connection con = jdbc.getUserIdentityConnection(this.jsonConfig);
-
         JSONObject _login = (JSONObject) this.data.get("login");
         JSONObject loginTestCase = (JSONObject) _login.get("loginWithValidData");
         String username = (String) loginTestCase.get("userName");
         String password = (String) loginTestCase.get("password");
 
-        String sql = "SELECT * FROM auth_user WHERE username = '" + username + "'";
-        Statement stm = con.createStatement();
-        ResultSet resultSet = stm.executeQuery(sql);
+        Boolean isUserExist = loginDB.checkIsUserExist(username);
 
-        if(!resultSet.first()){
-
+        if(!isUserExist){
             //Create User using Register
             driver.navigate().to(this.getAppURL() + "/register");
             RegistrationPage register = new RegistrationPage(driver);
@@ -56,23 +57,7 @@ public class LoginTest extends TestBase {
 
             register.clickRegisterBtn();
 
-            //Inserting User in Database
-//            String insertSQL = "INSERT INTO auth_user (user_code, username, user_password, email, name_ar, name_en) " +
-//                    "VALUES ('123', '" + username + "', '25d55ad283aa400af464c76d713c07ad', 'ahmed.motair1234@gmail.com', " +
-//                    "'Ahmed Arabic', 'Ahmed Motair 123')";
-//
-//            Statement stm2 = con.createStatement();
-//            int rows = stm2.executeUpdate(insertSQL);
-//
-//            if(rows != 0){
-//                System.out.println("New User is inserted successful");
-//            }
-//            stm2.close();
         }
-        resultSet.close();
-        stm.close();
-        con.close();
-
     }
 
 
