@@ -36,7 +36,7 @@ public abstract class TestBase {
         // Create object of ChromeOption class
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
-        options.setPageLoadStrategy(PageLoadStrategy.NONE);
+//        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
