@@ -10,8 +10,8 @@ public class ProfileRequestTabPage extends UserProfilePage {
         super(driver);
     }
 
-    @FindBy(id = "reqID")
-    public WebElement reqIDtxtInput;
+    @FindBy(id = "reqTitle")
+    public WebElement reqTitleTxt;
 
     @FindBy(id = "searchBtn")
     public WebElement searchBtn;

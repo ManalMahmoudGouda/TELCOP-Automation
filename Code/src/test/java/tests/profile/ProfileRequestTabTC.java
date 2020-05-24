@@ -53,15 +53,10 @@ public class ProfileRequestTabTC extends TestBase {
         Assert.assertTrue(requestsTab.requestsRows.size() > 0, "No Requests appear in Request List");
 
         WebElement firstRow = requestsTab.requestsRows.get(0);
-        WebElement firstRowReqTitle = firstRow.findElement(By.tagName("td"));
-        String firstRowReqLink = firstRowReqTitle.getAttribute("ng-reflect-router-link");
-        Assert.assertNotNull(firstRowReqLink, "Request Link doesn't exist");
+        String firstRowReqTitle = firstRow.findElement(By.tagName("td")).getText();
+        Assert.assertFalse(firstRowReqTitle.trim().isEmpty(), "Empty Request Title");
 
-        String[] firstRowReqLinkParts = firstRowReqLink.split("/");
-        String firstRowReqID = firstRowReqLinkParts[firstRowReqLinkParts.length-1];
-        Assert.assertNotNull(firstRowReqID, "Request ID doesn't exist");
-
-        PageBase.setText(requestsTab.reqIDtxtInput, firstRowReqID);
+        PageBase.setText(requestsTab.reqTitleTxt, firstRowReqTitle);
         PageBase.clickButton(requestsTab.searchBtn);
 
         Thread.sleep(5000);
