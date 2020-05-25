@@ -1,0 +1,10 @@
+{
+  "createCourse": {
+    "duration": "150",
+    "categoryName": "Computer Science",
+    "courseType": "Academic",
+    "courseLevel": "Intermediate",
+    "courseLanguage": "Arabic",
+    "description": "This course provide introduction to api testing"
+  }
+}

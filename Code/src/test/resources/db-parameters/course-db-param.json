@@ -1,0 +1,11 @@
+{
+  "roles": {
+    "instructorID": "22"
+  },
+  "systemConfigs": {
+    "maxLimitOfNewCourseID": "21"
+  },
+  "users": {
+    "password": "12345678"
+  }
+}

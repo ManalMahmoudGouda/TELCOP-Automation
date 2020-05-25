@@ -13,7 +13,7 @@ public class PageBase {
         this.driver = driver;
         this.URL = appURL;
         PageFactory.initElements(driver, this);
-        driver.manage().window().fullscreen();
+//        driver.manage().window().fullscreen();
 
     }
 

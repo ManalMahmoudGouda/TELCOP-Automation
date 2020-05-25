@@ -15,12 +15,6 @@ public class RequestDetailsPage extends PageBase {
 
     public boolean requestDetailsIsDisplayed(){
         return requestTitleHeader.isDisplayed();
-//        if(requestDtailsTxt.isDisplayed()) {
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
     }
 
 }

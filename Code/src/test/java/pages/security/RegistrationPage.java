@@ -1,10 +1,16 @@
 package pages.security;
 
+import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.HomePage;
 import pages.PageBase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RegistrationPage extends PageBase {
@@ -13,6 +19,9 @@ public class RegistrationPage extends PageBase {
         super(driver);
     }
 
+    public RegistrationPage(WebDriver driver, String appURL) {
+        super(driver, appURL);
+    }
 
     @FindBy(id = "fullName")
     WebElement fullNameTxt;
@@ -78,26 +87,14 @@ public class RegistrationPage extends PageBase {
     }
 
     public boolean isFullNameErrorDisplayed() {
-//        System.out.println(fullNameErrMsg);
-        if (fullNameErrMsgList.size() != 0 && fullNameErrMsgList.get(0).isDisplayed())
-            return true;
-        else
-            return false;
+        return fullNameErrMsgList.size() != 0 && fullNameErrMsgList.get(0).isDisplayed();
     }
 
     public boolean isEmailErrorDisplayed() {
-        if (getErrorMsgEmail.isDisplayed())
-            return true;
-        else
-            return false;
+        return getErrorMsgEmail.isDisplayed();
     }
     public boolean isEmailAndUserNameUnique(){
-        if(getErrormsgUserNameUniqque.isDisplayed())
-            return  true;
-        else
-            return false;
-
-
+        return getErrormsgUserNameUniqque.isDisplayed();
     }
     public String getErrorAlertText(){
         String value =  getErrormsgUserNameUniqque.getText();
@@ -109,14 +106,43 @@ public class RegistrationPage extends PageBase {
 
     }
     public void resetForm() {
-
         fullNameTxt.clear();
         usernameTxt.clear();
         passwordTxt.clear();
         confirmPasswordTxt.clear();
         emailTxt.clear();
-
-
     }
 
+    public String registerNewUser(String username, String password){
+        WebDriverWait wait=new WebDriverWait(driver, 2, 1000);
+
+        HomePage homePage = new HomePage(driver, this.URL);
+        homePage.signOutIfLoggedIn();
+
+        LoginPage loginPage = new LoginPage(driver, this.URL);
+        wait.until(ExpectedConditions.visibilityOf(loginPage.registerLink));
+        loginPage.clickRegisterLink();
+
+        wait.until(ExpectedConditions.visibilityOf(fullNameTxt));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("ddHHmmss");
+        String num = sdf.format(new Date());
+        username += num;
+
+        Faker faker = new Faker();
+        String fullName = faker.address().firstName() + " " + faker.address().lastName();
+
+        this.setFullName(fullName);
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setConfirmPassword(password);
+        this.setEmailTxt(faker.internet().emailAddress());
+        this.toggleSubscribe();
+
+        this.clickRegisterBtn();
+
+        loginPage = new LoginPage(driver);
+        wait.until(ExpectedConditions.visibilityOf(loginPage.userNameText));
+        return username;
+    }
 }

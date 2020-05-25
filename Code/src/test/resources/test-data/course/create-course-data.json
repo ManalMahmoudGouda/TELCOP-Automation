@@ -25,7 +25,7 @@
     "courseLanguage": "Arabic",
     "startDate": "30/5/2020",
     "description": "This course provide introduction to api testing",
-    "expectedErrMsg": "Course name should be unique per instructor"
+    "expectedErrMsg": "This Course is already created before"
   },
 
   "CreateCourseWithInvalidData": [
@@ -38,12 +38,12 @@
       "courseLanguage": null,
       "startDate": " ",
       "description": " ",
-      "errorMsgIds": "corTitle_ValDiv_emptyStr_en,duration_ValDiv_required_en,categoryName_ValDiv_emptyStr_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,expectedFinishedDate_ValDiv_required_en"
+      "errorMsgIds": "corTitle_ValDiv_emptyStr_en,duration_ValDiv_required_en,categoryName_ValDiv_emptyStr_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,expectedFinishedDate_ValDiv_emptyStr_en"
     }
   ],
 
   "validateMandatoryField":{
-    "errorMsgIds":"corTitle_ValDiv_required_en,duration_ValDiv_required_en,categoryName_ValDiv_emptyStr_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,originalLangID_ValDiv_required_en,expectedFinishedDate_ValDiv_required_en"
+    "errorMsgIds":"corTitle_ValDiv_required_en,duration_ValDiv_required_en,categoryName_ValDiv_required_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,originalLangID_ValDiv_required_en,expectedFinishedDate_ValDiv_required_en"
   },
   "validateDurationField":{
     "courseTitle": "Api Development",
@@ -58,7 +58,11 @@
 
   },
   "tc-validateMaxLimitOfCreateNewCourses": {
-    "maxLimitConfigurationID": "21",
+    "duration": "50",
+    "categoryName": "Computer Science",
+    "courseType": "Academic",
+    "courseLevel": "Intermediate",
+    "courseLanguage": "Arabic",
     "expectedAlertErrMsg": "Instructor has reached his max limit of creating new Courses"
 
   }

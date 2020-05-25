@@ -14,6 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RegisterationTest extends TestBase {
+    public RegisterationTest() throws IOException, ParseException {
+    }
+
     @Override
     protected void setJSONFileName() {
         this.FILE_NAME = "test-Data.json";
@@ -31,9 +34,11 @@ public class RegisterationTest extends TestBase {
 
         JSONObject _register = (JSONObject) this.data.get("register");
         JSONObject testCase = (JSONObject) _register.get("registerNewUser");
-        SimpleDateFormat sdf = new SimpleDateFormat("ddmmss");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("ddHHmmss");
         String num = sdf.format(new Date());
         String username = testCase.get("userName") + num;
+
         String password = (String) testCase.get("password");
 
         register.setFullName((String) testCase.get("fullName"));

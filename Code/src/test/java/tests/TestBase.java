@@ -1,5 +1,6 @@
 package tests;
 
+import common.CommonFileNames;
 import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,6 +8,8 @@ import org.json.simple.parser.ParseException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -26,9 +29,12 @@ public abstract class TestBase {
     protected JSONObject data;
     protected JSONObject jsonConfig;
 
+    public TestBase() throws IOException, ParseException {
+        this.jsonConfig = (JSONObject) this.readJson(CommonFileNames.MAIN_CONFIG_JSON_PATH);
+    }
+
     @BeforeClass
     public void initialize() throws IOException, SQLException, ClassNotFoundException, ParseException {
-        this.jsonConfig = (JSONObject) this.readJson("src/test/resources/config.json");
         String driverPath = (String) this.jsonConfig.get("chromeDriverPath");
         Map<String, Object> prefs = new HashMap<String, Object>();
         prefs.put("profile.default_content_setting_values.notifications", 2);
@@ -47,7 +53,7 @@ public abstract class TestBase {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+//        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     protected abstract void setJSONFileName();
@@ -101,14 +107,17 @@ public abstract class TestBase {
 
     public void assertAlertError(String expectedErrMsg) throws Exception {
         try {
-            WebElement element = driver.findElement(By.xpath("//div[contains(@class, 'alert alert-danger')]"));
-            String actualErrMsg = element.getText();
+            By locator = By.xpath("//div[contains(@class, 'alert alert-danger')]");
+            WebDriverWait wait = new WebDriverWait(driver, 5, 500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+
+            WebElement element = driver.findElement(locator);
+            String actualErrMsg = element.getText().trim();
 
             try {
                 Assert.assertEquals(actualErrMsg, expectedErrMsg);
             } catch (AssertionError err){
                 takeScreenshot(driver, expectedErrMsg + "_Not_Found");
-               // Assert.assertEquals(actualErrMsg, expectedErrMsg);
             }
         } catch (NoSuchElementException ex){ // In case of the alert error doesn't appear after clicking the button
             takeScreenshot(driver, "Error_Alert_Not_Found");

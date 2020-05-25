@@ -1,9 +1,12 @@
 package pages;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.xml.ws.WebEndpoint;
 
@@ -44,13 +47,13 @@ public class HomePage extends PageBase {
 
     public void signOutIfLoggedIn(){
         driver.navigate().to(this.URL + "/");
+        WebDriverWait wait=new WebDriverWait(driver, 2, 1000);
+
         try{
-            if(userName.isDisplayed()){
-                profileDropDownList.click();
-                signoutAnchor.click();
-            }
-        } catch (NoSuchElementException ex){
-            return;
+            wait.until(ExpectedConditions.visibilityOf(userName));
+            profileDropDownList.click();
+            signoutAnchor.click();
+        } catch (TimeoutException ignored){
         }
     }
 }

@@ -1,22 +1,27 @@
 package tests.security;
 
-import database.security.LoginDB;
+import database.UsersDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.HomePage;
 import pages.security.LoginPage;
 import pages.security.RegistrationPage;
 import tests.TestBase;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
+@Test
 public class LoginTest extends TestBase {
     private LoginPage login;
 
-    public LoginTest() throws SQLException, ClassNotFoundException {
+    public LoginTest() throws SQLException, ClassNotFoundException, IOException, ParseException {
+        super();
     }
 
 
@@ -33,8 +38,8 @@ public class LoginTest extends TestBase {
         String username = (String) loginTestCase.get("userName");
         String password = (String) loginTestCase.get("password");
 
-        LoginDB loginDB = new LoginDB(this.jsonConfig);
-        Boolean isUserExist = loginDB.checkIsUserExist(username);
+        UsersDB userDB = new UsersDB(this.jsonConfig);
+        Boolean isUserExist = userDB.checkIsUserExist(username);
 
         if(!isUserExist){
             //Create User using Register
@@ -85,14 +90,21 @@ public class LoginTest extends TestBase {
             login.setPassword((String) user.get("password"));
             login.clickLogin();
             String fieldToBeValidated = (String) user.get("fieldToBeValidated");
+
+            WebDriverWait webDriverWait = new WebDriverWait(driver, 2, 500);
+
             switch (fieldToBeValidated) {
                 case "password":
+                    webDriverWait.until(ExpectedConditions.visibilityOf(login.errorMsgPassword));
                     Assert.assertTrue(login.isErrorMSgPasswordIsDisplayed(), "error msg for incorrect password isn't displayed ");
                     break;
                 case "userName":
+                    webDriverWait.until(ExpectedConditions.visibilityOf(login.errorMsguserName));
                     Assert.assertTrue(login.isErrorMSgUserNameIsDisplayed(), "error msg for incorrect user  isn't displayed");
                     break;
                 case "allFields":
+                    webDriverWait.until(ExpectedConditions.visibilityOf(login.errorMsgPassword));
+                    webDriverWait.until(ExpectedConditions.visibilityOf(login.errorMsguserName));
                     Assert.assertTrue(login.isErrorMSgPasswordIsDisplayed(), "error msg for incorrect password isn't displayed ");
                     Assert.assertTrue(login.isErrorMSgUserNameIsDisplayed(), "error msg for incorrect user  isn't displayed");
                     break;

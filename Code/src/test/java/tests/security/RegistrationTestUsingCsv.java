@@ -2,6 +2,7 @@ package tests.security;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.security.LoginPage;
@@ -15,6 +16,9 @@ public class RegistrationTestUsingCsv extends TestBase {
 
     RegistrationPage register;
     LoginPage login;
+
+    public RegistrationTestUsingCsv() throws IOException, ParseException {
+    }
 
     @Override
     protected void setJSONFileName() {

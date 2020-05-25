@@ -1,6 +1,7 @@
 package tests.profile;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,9 +16,13 @@ import pages.request.RequestInfoTab;
 import pages.security.LoginPage;
 import tests.TestBase;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ProfileRequestTabTC extends TestBase {
+
+    public ProfileRequestTabTC() throws IOException, ParseException {
+    }
 
     @Override
     protected void setJSONFileName() {

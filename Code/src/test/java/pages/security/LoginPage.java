@@ -3,6 +3,7 @@ package pages.security;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pages.HomePage;
 import pages.PageBase;
 
 public class LoginPage extends PageBase {
@@ -21,13 +22,13 @@ public class LoginPage extends PageBase {
     @FindBy(id = "password")
     public WebElement passwordText;
 
-    @FindBy(xpath = "//div[contains(@class,'alert alert-danger alert-mg-b font-size-14')]")
-    WebElement errorMsgPassword;
+    @FindBy(xpath = "//div[contains(@class,'alert alert-danger')]")
+    public WebElement errorMsgPassword;
 
     @FindBy(xpath = "//div[contains(@class,'alert alert-danger alert-mg-b font-size-14')]")
-    WebElement errorMsguserName;
+    public WebElement errorMsguserName;
     @FindBy(xpath = "//button[@type='submit']")
-    WebElement loginBtn;
+    public WebElement loginBtn;
 
     public void clickRegisterLink() {
 
@@ -47,13 +48,7 @@ public class LoginPage extends PageBase {
     }
 
     public boolean isErrorMSgPasswordIsDisplayed() {
-
-        if (errorMsgPassword.isDisplayed()) {
-            return true;
-
-        } else {
-            return false;
-        }
+        return errorMsgPassword.isDisplayed();
     }
 
     public boolean isErrorMSgUserNameIsDisplayed() {
@@ -75,11 +70,14 @@ public class LoginPage extends PageBase {
     }
 
     public void login(String userName, String password) {
+        HomePage homePage = new HomePage(driver, this.URL);
+        homePage.signOutIfLoggedIn();
 
-        driver.navigate().to(this.URL + "/login");
         setUserName(userName);
         setPassword(password);
         clickLogin();
+
+        driver.manage().window().maximize();
     }
 }
 

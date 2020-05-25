@@ -12,9 +12,14 @@ public class JDBCAdapter {
     private Connection dorrarConnection;
 
     public JDBCAdapter(JSONObject config) throws SQLException, ClassNotFoundException {
-        this.userIDConnection = this.createUserIDConnection(config);
-        this.sysConfigConnection = this.createSysConfigConnection(config);
-        this.dorrarConnection = this.createDorrarConnection(config);
+        if(this.userIDConnection == null || this.userIDConnection.isClosed())
+            this.userIDConnection = this.createUserIDConnection(config);
+
+        if(this.sysConfigConnection == null || this.sysConfigConnection.isClosed())
+            this.sysConfigConnection = this.createSysConfigConnection(config);
+
+        if(this.dorrarConnection == null || this.dorrarConnection.isClosed())
+            this.dorrarConnection = this.createDorrarConnection(config);
     }
 
     private Connection createConnection(JSONObject config) throws ClassNotFoundException, SQLException {
@@ -52,12 +57,21 @@ public class JDBCAdapter {
     public Connection getUserIDConnection() {
         return userIDConnection;
     }
-
     public Connection getSysConfigConnection() {
         return sysConfigConnection;
     }
-
     public Connection getDorrarConnection() {
         return dorrarConnection;
+    }
+
+    public void closeConnections() throws SQLException {
+        if(this.userIDConnection != null && !this.userIDConnection.isClosed())
+            this.userIDConnection.close();
+
+        if(this.sysConfigConnection != null && !this.sysConfigConnection.isClosed())
+            this.sysConfigConnection.close();
+
+        if(this.dorrarConnection != null && !this.dorrarConnection.isClosed())
+            this.dorrarConnection.close();
     }
 }
