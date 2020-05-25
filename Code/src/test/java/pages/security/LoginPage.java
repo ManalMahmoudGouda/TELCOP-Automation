@@ -1,10 +1,9 @@
-package pages;
+package pages.security;
 
-import org.json.simple.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.XpiDriverService;
 import org.openqa.selenium.support.FindBy;
+import pages.PageBase;
 
 public class LoginPage extends PageBase {
     public LoginPage(WebDriver driver) {
@@ -16,11 +15,11 @@ public class LoginPage extends PageBase {
     }
 
     @FindBy(xpath = "//a[@href=\"/register\"]")
-    WebElement registerLink;
+    public WebElement registerLink;
     @FindBy(id = "username")
-    WebElement userNameText;
+    public WebElement userNameText;
     @FindBy(id = "password")
-    WebElement passwordText;
+    public WebElement passwordText;
 
     @FindBy(xpath = "//div[contains(@class,'alert alert-danger alert-mg-b font-size-14')]")
     WebElement errorMsgPassword;
@@ -67,7 +66,6 @@ public class LoginPage extends PageBase {
         }
     }
 
-
     public void resetForm() {
 
         userNameText.clear();
@@ -75,7 +73,6 @@ public class LoginPage extends PageBase {
 
 
     }
-
 
     public void login(String userName, String password) {
 

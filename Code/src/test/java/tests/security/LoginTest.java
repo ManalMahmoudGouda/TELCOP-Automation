@@ -1,30 +1,20 @@
-package tests;
+package tests.security;
 
-import database.course.CreateCourseDB;
 import database.security.LoginDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.HomePage;
-import pages.LoginPage;
-import pages.RegistrationPage;
-import util.JDBCAdapter;
+import pages.security.LoginPage;
+import pages.security.RegistrationPage;
+import tests.TestBase;
 
-import javax.xml.soap.SAAJResult;
-import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class LoginTest extends TestBase {
     private LoginPage login;
-    private HomePage homePage;
-    private LoginDB loginDB = new LoginDB(this.jsonConfig);
 
     public LoginTest() throws SQLException, ClassNotFoundException {
     }
@@ -43,6 +33,7 @@ public class LoginTest extends TestBase {
         String username = (String) loginTestCase.get("userName");
         String password = (String) loginTestCase.get("password");
 
+        LoginDB loginDB = new LoginDB(this.jsonConfig);
         Boolean isUserExist = loginDB.checkIsUserExist(username);
 
         if(!isUserExist){
@@ -74,7 +65,7 @@ public class LoginTest extends TestBase {
         login.setPassword((String) loginTestCase.get("password"));
 
         login.clickLogin();
-        homePage = new HomePage(driver);
+//        HomePage homePage = new HomePage(driver);
         this.takeScreenshot(driver, "Login-Success");
 //        Assert.assertTrue(homePage.userNameIsDisplayed(), "user name isn't displayed");
     }

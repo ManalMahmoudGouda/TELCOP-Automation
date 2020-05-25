@@ -1,17 +1,13 @@
-package tests;
+package tests.security;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.apache.commons.lang3.ObjectUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.RegistrationPage;
+import pages.security.LoginPage;
+import pages.security.RegistrationPage;
+import tests.TestBase;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 

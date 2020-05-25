@@ -1,9 +1,9 @@
-package pages;
+package pages.security;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pages.PageBase;
 
 import java.util.List;
 
@@ -42,60 +42,39 @@ public class RegistrationPage extends PageBase {
     WebElement closeButton;
 
     public void setFullName(String fullName) {
-
         fullNameTxt.sendKeys(fullName);
     }
 
     public void setUsername(String userName) {
-
         usernameTxt.sendKeys(userName);
     }
 
     public void setPassword(String password) {
-
         passwordTxt.sendKeys(password);
     }
 
     public void setConfirmPassword(String confirmPassword) {
-
         confirmPasswordTxt.sendKeys(confirmPassword);
     }
 
     public void setEmailTxt(String email) {
-
         emailTxt.sendKeys(email);
     }
 
     public void toggleSubscribe() {
-
         subscribeChkBox.click();
     }
 
     public void clickRegisterBtn() {
-
         registerBtn.click();
     }
 
     public boolean isUsernameErrorDisplayed() {
-
-        if (errorMsgUserName.isDisplayed()) {
-            return true;
-        } else {
-
-            return false;
-        }
-
+        return errorMsgUserName.isDisplayed();
     }
 
     public boolean isPasswordErrorDisplayed() {
-
-        if (getErrorMsgPassword.isDisplayed()) {
-            return true;
-        } else {
-
-            return false;
-        }
-
+        return getErrorMsgPassword.isDisplayed();
     }
 
     public boolean isFullNameErrorDisplayed() {

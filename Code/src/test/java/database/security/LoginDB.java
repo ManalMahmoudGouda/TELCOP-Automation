@@ -1,7 +1,6 @@
 package database.security;
 
 import org.json.simple.JSONObject;
-import pages.RegistrationPage;
 import util.JDBCAdapter;
 
 import java.sql.Connection;

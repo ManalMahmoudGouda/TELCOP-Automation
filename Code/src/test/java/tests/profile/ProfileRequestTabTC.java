@@ -8,11 +8,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.HomePage;
-import pages.LoginPage;
 import pages.PageBase;
 import pages.profile.ProfileRequestTab;
 import pages.request.RequestDetailsPage;
 import pages.request.RequestInfoTab;
+import pages.security.LoginPage;
 import tests.TestBase;
 
 import java.util.List;
