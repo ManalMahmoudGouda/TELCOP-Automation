@@ -38,12 +38,15 @@
       "courseLanguage": null,
       "startDate": " ",
       "description": " ",
-      "errorMsgIds": "corTitle_ValDiv_emptyStr_en,duration_ValDiv_required_en,categoryName_ValDiv_emptyStr_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,expectedFinishedDate_ValDiv_emptyStr_en"
+      "errorMsgIds": "corTitle_emptyStr_en,duration_required_en,categoryName_emptyStr_en,corTypeID_required_en,corLevelID_required_en,expectedFinishedDate_emptyStr_en"
     }
   ],
 
   "validateMandatoryField":{
-    "errorMsgIds":"corTitle_ValDiv_required_en,duration_ValDiv_required_en,categoryName_ValDiv_required_en,corTypeID_ValDiv_required_en,corLevelID_ValDiv_required_en,originalLangID_ValDiv_required_en,expectedFinishedDate_ValDiv_required_en"
+    "errorMsgIds": [
+      "corTitle_required_en", "duration_required_en", "categoryName_required_en", "corTypeID_required_en", "corLevelID_required_en",
+      "originalLangID_required_en", "expectedFinishedDate_required_en"
+    ]
   },
   "validateDurationField":{
     "courseTitle": "Api Development",
@@ -54,7 +57,7 @@
     "courseLanguage": "Arabic",
     "startDate": "15/6/2020",
     "description": "This course provide introduction to api testing",
-    "errorMsgId":"duration_ValDiv_pattern_en"
+    "errorMsgId":"duration_noDecimal_en"
 
   },
   "tc-validateMaxLimitOfCreateNewCourses": {

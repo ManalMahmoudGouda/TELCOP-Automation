@@ -1,9 +1,10 @@
-package pages;
+package pages.course;
 
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pages.PageBase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,7 +55,7 @@ public class NewCoursePage extends PageBase {
         SimpleDateFormat sdf = new SimpleDateFormat("ddHHmmss");
         Faker faker = new Faker();
         String courseTitle = faker.educator().course() + sdf.format(new Date());
-        setText(this.courseTitle, courseTitle);
+        setInputValue(this.courseTitle, courseTitle);
         return courseTitle;
     }
 

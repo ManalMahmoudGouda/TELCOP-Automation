@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 import pages.*;
+import pages.course.NewCoursePage;
 import pages.request.RequestDetailsPage;
 import pages.security.LoginPage;
 import pages.security.RegistrationPage;
@@ -61,11 +62,8 @@ public class CreateCourseTC extends TestBase {
         login.login(username, password);
 
         HomePage home = new HomePage(driver, this.getAppURL());
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.visibilityOf(home.course));
-
-        PageBase.clickButton(home.course);
-        PageBase.clickButton(home.newCourse);
+        home.clickBtn(home.course);
+        home.clickBtn(home.newCourse);
         return username;
     }
 
@@ -81,14 +79,14 @@ public class CreateCourseTC extends TestBase {
         NewCoursePage coursePage = new NewCoursePage(driver);
 
         String courseTitle = coursePage.setRandomCourseTitle();
-        PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
-        PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
-        PageBase.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
-        PageBase.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
-        PageBase.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
+        coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
+        coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
+        coursePage.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
+        coursePage.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
+        coursePage.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
         coursePage.setFutureDateForExpectedFinishedDate();
-        PageBase.setText(coursePage.description, (String) tcData.get("description"));
-        PageBase.clickButton(coursePage.btnCreate);
+        coursePage.setInputValue(coursePage.description, (String) tcData.get("description"));
+        coursePage.clickBtn(coursePage.btnCreate);
 
         details = new RequestDetailsPage(driver);
         WebDriverWait wait = new WebDriverWait(driver, 2);
@@ -110,15 +108,15 @@ public class CreateCourseTC extends TestBase {
 
         JSONObject tcData = (JSONObject) this.data.get("validateDuplicateCourseWithSameInstructor");
         NewCoursePage coursePage = new NewCoursePage(driver);
-        PageBase.setText(coursePage.courseTitle, courseTitle);
-        PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
-        PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
-        PageBase.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
-        PageBase.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
-        PageBase.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
+        coursePage.setInputValue(coursePage.courseTitle, courseTitle);
+        coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
+        coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
+        coursePage.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
+        coursePage.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
+        coursePage.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
         coursePage.setFutureDateForExpectedFinishedDate();
-        PageBase.setText(coursePage.description, (String) tcData.get("description"));
-        PageBase.clickButton(coursePage.btnCreate);
+        coursePage.setInputValue(coursePage.description, (String) tcData.get("description"));
+        coursePage.clickBtn(coursePage.btnCreate);
 
         this.assertAlertError((String) tcData.get("expectedErrMsg"));
         takeScreenshot(driver, "CourseTitleNotUnique");
@@ -142,14 +140,14 @@ public class CreateCourseTC extends TestBase {
         JSONObject tcData = (JSONObject) this.data.get("tc-validateMaxLimitOfCreateNewCourses");
         for(int i=0; i<diff; i++){
             coursePage.setRandomCourseTitle();
-            PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
-            PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
-            PageBase.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
-            PageBase.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
-            PageBase.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
+            coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
+            coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
+            coursePage.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
+            coursePage.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
+            coursePage.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
             coursePage.setFutureDateForExpectedFinishedDate();
 
-            PageBase.clickButton(coursePage.btnCreate);
+            coursePage.clickBtn(coursePage.btnCreate);
 
             details = new RequestDetailsPage(driver);
             WebDriverWait wait = new WebDriverWait(driver, 2);
@@ -159,19 +157,19 @@ public class CreateCourseTC extends TestBase {
             HomePage home = new HomePage(driver, this.getAppURL());
             wait.until(ExpectedConditions.visibilityOf(home.course));
 
-            PageBase.clickButton(home.course);
-            PageBase.clickButton(home.newCourse);
+            coursePage.clickBtn(home.course);
+            coursePage.clickBtn(home.newCourse);
         }
 
         coursePage.setRandomCourseTitle();
-        PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
-        PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
-        PageBase.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
-        PageBase.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
-        PageBase.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
+        coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
+        coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
+        coursePage.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
+        coursePage.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
+        coursePage.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
         coursePage.setFutureDateForExpectedFinishedDate();
 
-        PageBase.clickButton(coursePage.btnCreate);
+        coursePage.clickBtn(coursePage.btnCreate);
 
         this.assertAlertError((String) tcData.get("expectedAlertErrMsg"));
     }
@@ -186,15 +184,15 @@ public class CreateCourseTC extends TestBase {
 
             NewCoursePage coursePage = new NewCoursePage(driver);
 
-            PageBase.setText(coursePage.courseTitle, (String) courseData.get("courseTitle"));
-            PageBase.setText(coursePage.duration, (String) courseData.get("duration"));
-            PageBase.setText(coursePage.categoryName, (String) courseData.get("categoryName"));
-            PageBase.selectOption(coursePage.courseType, (String) courseData.get("courseType"));
-            PageBase.selectOption(coursePage.courseLevel, (String) courseData.get("courseLevel"));
-            PageBase.selectOption(coursePage.courseLanguage, (String) courseData.get("courseLanguage"));
-            PageBase.setText(coursePage.startDate, (String) courseData.get("startDate"));
-            PageBase.setText(coursePage.description, (String) courseData.get("description"));
-            PageBase.clickButton(coursePage.btnCreate);
+            coursePage.setInputValue(coursePage.courseTitle, (String) courseData.get("courseTitle"));
+            coursePage.setInputValue(coursePage.duration, (String) courseData.get("duration"));
+            coursePage.setInputValue(coursePage.categoryName, (String) courseData.get("categoryName"));
+            coursePage.selectOption(coursePage.courseType, (String) courseData.get("courseType"));
+            coursePage.selectOption(coursePage.courseLevel, (String) courseData.get("courseLevel"));
+            coursePage.selectOption(coursePage.courseLanguage, (String) courseData.get("courseLanguage"));
+            coursePage.setInputValue(coursePage.startDate, (String) courseData.get("startDate"));
+            coursePage.setInputValue(coursePage.description, (String) courseData.get("description"));
+            coursePage.clickBtn(coursePage.btnCreate);
 
             String errorMsgIDs = (String) courseData.get("errorMsgIds");
             String[] errorMsgIDAry = errorMsgIDs.split(",");
@@ -211,14 +209,13 @@ public class CreateCourseTC extends TestBase {
         this.loginToCreateCoursePage();
 
         NewCoursePage coursePage = new NewCoursePage(driver);
-        PageBase.clickButton(coursePage.btnCreate);
+        coursePage.clickBtn(coursePage.btnCreate);
 
         JSONObject mandatoryData = (JSONObject) this.data.get("validateMandatoryField");
-        String errorMsgIDs = (String) mandatoryData.get("errorMsgIds");
-        String[] errorMsgIDAry = errorMsgIDs.split(",");
+        JSONArray errorMsgIDs = (JSONArray) mandatoryData.get("errorMsgIds");
 
-        for (String errorMsgID : errorMsgIDAry)
-            this.assertElementErrorMsg(errorMsgID);
+        for (Object errorMsgID : errorMsgIDs)
+            this.assertElementErrorMsg((String) errorMsgID);
         takeScreenshot(driver, "Mandatoryfield");
     }
 
@@ -230,14 +227,14 @@ public class CreateCourseTC extends TestBase {
         NewCoursePage coursePage = new NewCoursePage(driver);
 
         coursePage.setRandomCourseTitle();
-        PageBase.setText(coursePage.duration, (String) tcData.get("duration"));
-        PageBase.setText(coursePage.categoryName, (String) tcData.get("categoryName"));
-        PageBase.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
-        PageBase.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
-        PageBase.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
-        PageBase.setText(coursePage.description, (String) tcData.get("description"));
+        coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
+        coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
+        coursePage.selectOption(coursePage.courseType, (String) tcData.get("courseType"));
+        coursePage.selectOption(coursePage.courseLevel, (String) tcData.get("courseLevel"));
+        coursePage.selectOption(coursePage.courseLanguage, (String) tcData.get("courseLanguage"));
+        coursePage.setInputValue(coursePage.description, (String) tcData.get("description"));
         coursePage.setFutureDateForExpectedFinishedDate();
-        PageBase.clickButton(coursePage.btnCreate);
+        coursePage.clickBtn(coursePage.btnCreate);
 
         String errorMsgID = (String) tcData.get("errorMsgId");
         this.assertElementErrorMsg(errorMsgID);

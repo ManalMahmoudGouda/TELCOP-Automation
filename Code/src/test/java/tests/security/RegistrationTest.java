@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RegisterationTest extends TestBase {
-    public RegisterationTest() throws IOException, ParseException {
+public class RegistrationTest extends TestBase {
+    public RegistrationTest() throws IOException, ParseException {
     }
 
     @Override

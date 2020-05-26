@@ -114,16 +114,12 @@ public class RegistrationPage extends PageBase {
     }
 
     public String registerNewUser(String username, String password){
-        WebDriverWait wait=new WebDriverWait(driver, 2, 1000);
 
         HomePage homePage = new HomePage(driver, this.URL);
         homePage.signOutIfLoggedIn();
 
         LoginPage loginPage = new LoginPage(driver, this.URL);
-        wait.until(ExpectedConditions.visibilityOf(loginPage.registerLink));
-        loginPage.clickRegisterLink();
-
-        wait.until(ExpectedConditions.visibilityOf(fullNameTxt));
+        loginPage.clickBtn(loginPage.registerLink);
 
         SimpleDateFormat sdf = new SimpleDateFormat("ddHHmmss");
         String num = sdf.format(new Date());
@@ -132,7 +128,7 @@ public class RegistrationPage extends PageBase {
         Faker faker = new Faker();
         String fullName = faker.address().firstName() + " " + faker.address().lastName();
 
-        this.setFullName(fullName);
+        this.setInputValue(this.fullNameTxt, fullName);
         this.setUsername(username);
         this.setPassword(password);
         this.setConfirmPassword(password);
@@ -142,7 +138,7 @@ public class RegistrationPage extends PageBase {
         this.clickRegisterBtn();
 
         loginPage = new LoginPage(driver);
-        wait.until(ExpectedConditions.visibilityOf(loginPage.userNameText));
+        loginPage.waitUntilVisible(loginPage.userNameText);
         return username;
     }
 }

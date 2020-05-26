@@ -39,11 +39,11 @@ public class ProfileRequestTabTC extends TestBase {
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOf(home.profileDropDownList));
-        PageBase.clickButton(home.profileDropDownList);
-        PageBase.clickButton(home.profileAnchor);
+        home.clickBtn(home.profileDropDownList);
+        home.clickBtn(home.profileAnchor);
 
         ProfileRequestTab profilePage = new ProfileRequestTab(driver);
-        PageBase.clickButton(profilePage.requestsTab);
+        home.clickBtn(profilePage.requestsTab);
         return profilePage;
     }
 
@@ -65,7 +65,7 @@ public class ProfileRequestTabTC extends TestBase {
         String workflow = firstRowCells.get(1).getText();
         String status = firstRowCells.get(2).getText();
         String pendingOn = firstRowCells.get(3).getText();
-        PageBase.clickButton(firstRowCells.get(0));
+        requestsTab.clickBtn(firstRowCells.get(0));
 
         RequestDetailsPage requestDetailsPage = new RequestDetailsPage(driver);
         Thread.sleep(5000);
@@ -97,8 +97,8 @@ public class ProfileRequestTabTC extends TestBase {
         String firstRowReqTitle = firstRow.findElement(By.tagName("td")).getText();
         Assert.assertFalse(firstRowReqTitle.trim().isEmpty(), "Empty Request Title");
 
-        PageBase.setText(requestsTab.reqTitleTxt, firstRowReqTitle);
-        PageBase.clickButton(requestsTab.searchBtn);
+        requestsTab.setInputValue(requestsTab.reqTitleTxt, firstRowReqTitle);
+        requestsTab.clickBtn(requestsTab.searchBtn);
 
         Thread.sleep(5000);
         Assert.assertTrue(requestsTab.requestsRows.size() > 0, "No Requests retrieved in the list");
