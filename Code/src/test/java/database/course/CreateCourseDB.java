@@ -45,7 +45,7 @@ public class CreateCourseDB {
         Connection connection = jdbc.getDorrarConnection();
 
         final String SQL = "SELECT COUNT(ID) AS cor_count FROM req_course " +
-                "WHERE is_done = 0 AND instructor_id = " + instructorID;
+                "WHERE is_course_completed = 0 AND instructor_id = " + instructorID;
 
         Statement stm = connection.createStatement();
         ResultSet resultSet = stm.executeQuery(SQL);
