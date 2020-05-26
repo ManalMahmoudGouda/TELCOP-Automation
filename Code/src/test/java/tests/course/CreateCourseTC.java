@@ -1,8 +1,8 @@
 package tests.course;
 
 import common.CourseFileNames;
+import database.CourseDB;
 import database.UsersDB;
-import database.course.CreateCourseDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -24,12 +24,12 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 public class CreateCourseTC extends TestBase {
-    public CreateCourseDB db;
+    public CourseDB db;
     public UsersDB usersDB;
 
     public CreateCourseTC() throws SQLException, ClassNotFoundException, IOException, ParseException {
         super();
-        db = new CreateCourseDB(this.jsonConfig);
+        db = new CourseDB(this.jsonConfig);
         usersDB = new UsersDB(this.jsonConfig);
     }
 
@@ -89,7 +89,7 @@ public class CreateCourseTC extends TestBase {
         coursePage.clickBtn(coursePage.btnCreate);
 
         details = new RequestDetailsPage(driver);
-        WebDriverWait wait = new WebDriverWait(driver, 2);
+        WebDriverWait wait = new WebDriverWait(driver, 3, 500);
         wait.until(ExpectedConditions.visibilityOf(details.requestTitleHeader));
         Assert.assertTrue(details.requestTitleHeader.isDisplayed(), "Request Details isn't displayed");
 

@@ -1,6 +1,6 @@
 {
   "chromeDriverPath": "src/test/resources/chromedriver_ver_83.0.4103.39.exe",
-  "applicationURL": "http://localhost:4500",
+  "applicationURL": "http://localhost:9120",
   "screenshotsPath": "src/../Bugs-Screenshots/",
   "database": {
     "userIdentity": {

@@ -42,7 +42,6 @@ public abstract class TestBase {
         // Create object of ChromeOption class
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", prefs);
-//        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
@@ -53,7 +52,6 @@ public abstract class TestBase {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     protected abstract void setJSONFileName();
@@ -61,7 +59,7 @@ public abstract class TestBase {
     //Test cleanup
     @AfterClass
     public void TeardownTest() {
-//        TestBase.driver.quit();
+        TestBase.driver.quit();
     }
 
     private Object readJson() throws IOException, ParseException {

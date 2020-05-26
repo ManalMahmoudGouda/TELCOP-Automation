@@ -50,6 +50,7 @@ public class RegistrationTest extends TestBase {
         register.clickRegisterBtn();
 
         Thread.sleep(3000);
+        //Todo change this validation
         Assert.assertTrue(login.userNameText.isDisplayed(), "Register doesn't navigate to Login Page");
     }
 

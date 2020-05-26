@@ -1,4 +1,4 @@
-package database.course;
+package database;
 
 import org.json.simple.JSONObject;
 import org.testng.Assert;
@@ -9,10 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CreateCourseDB {
+public class CourseDB {
     private JDBCAdapter jdbc;
-    
-    public CreateCourseDB(JSONObject jsonConfig) throws SQLException, ClassNotFoundException {
+
+    public CourseDB(JSONObject jsonConfig) throws SQLException, ClassNotFoundException {
         this.jdbc = new JDBCAdapter(jsonConfig);
     }
 

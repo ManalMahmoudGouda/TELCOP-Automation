@@ -37,13 +37,13 @@ public class RegistrationPage extends PageBase {
     WebElement subscribeChkBox;
     @FindBy(xpath = "//button[@type='submit']")
     WebElement registerBtn;
-    @FindBy(id = "username_ValDiv_pattern_en")
+    @FindBy(id = "username_pattern_en")
     WebElement errorMsgUserName;
-    @FindBy(id = "fullName_ValDiv_pattern_en")
+    @FindBy(id = "fullName_pattern_en")
     List<WebElement> fullNameErrMsgList;
-    @FindBy(id = "pass_ValDiv_passwordsNotMatching_en")
+    @FindBy(id = "pass_passwordsNotMatching_en")
     WebElement getErrorMsgPassword;
-    @FindBy(id = "email_ValDiv_pattern_en")
+    @FindBy(id = "email_pattern_en")
     WebElement getErrorMsgEmail;
     @FindBy(xpath = "//div[contains(@class,'alert alert-danger alert-mg-b font-size-14')]")
     WebElement getErrormsgUserNameUniqque;
