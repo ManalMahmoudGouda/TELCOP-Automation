@@ -35,7 +35,6 @@ public class CreateCourseTC extends TestBase {
         this.FILE_NAME = CourseFileNames.CREATE_COURSE_TEST_DATA;
     }
 
-    private LoginPage login;
     private RequestDetailsPage details;
 
     private String loginToCreateCoursePage(String username) throws SQLException, IOException, ParseException, InterruptedException {
@@ -47,9 +46,9 @@ public class CreateCourseTC extends TestBase {
 
             String instructorRoleID = JSONResReader.readProperty(this.data, "common.instructorRoleID");
             usersDB.grantUserRole(username, instructorRoleID);
-        } else
+        }
 
-        login = new LoginPage(driver, this.getAppURL());
+        LoginPage login = new LoginPage(driver, this.getAppURL());
         login.login(username, password);
 
         HomePage home = new HomePage(driver, this.getAppURL());
