@@ -1,7 +1,6 @@
 package tests.course;
 
 import common.CourseFileNames;
-import database.CourseDB;
 import database.UsersDB;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,12 +23,10 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 public class CreateCourseTC extends TestBase {
-    public CourseDB db;
     public UsersDB usersDB;
 
     public CreateCourseTC() throws SQLException, ClassNotFoundException, IOException, ParseException {
         super();
-        db = new CourseDB(this.jsonConfig);
         usersDB = new UsersDB(this.jsonConfig);
     }
 
@@ -41,22 +38,16 @@ public class CreateCourseTC extends TestBase {
     private LoginPage login;
     private RequestDetailsPage details;
 
-    private String loginToCreateCoursePage(String username, String password) throws SQLException, ClassNotFoundException, IOException, ParseException, InterruptedException {
-        if(username == null && password == null) {
-            JSONObject corDBParams = (JSONObject) JSONResReader.readJSONResource(CourseFileNames.COURSE_DATABASE_PARAMS);
+    private String loginToCreateCoursePage(String username) throws SQLException, IOException, ParseException, InterruptedException {
+        String password = JSONResReader.readProperty(this.data, "common.usersPassword");
 
-            String maxLimitConfigID = JSONResReader.readProperty(corDBParams, "systemConfigs.maxLimitOfNewCourseID");
-            String instructorRoleID = JSONResReader.readProperty(corDBParams, "roles.instructorID");
-            username = db.selectUsernameWithCanCreateCourse(instructorRoleID, maxLimitConfigID);
-            password = JSONResReader.readProperty(corDBParams, "users.password");
-            if (username == null) {
-                RegistrationPage registrationPage = new RegistrationPage(driver, this.getAppURL());
-                username = registrationPage.registerNewUser("instructor_", password);
+        if(username == null){
+            RegistrationPage registrationPage = new RegistrationPage(driver, this.getAppURL());
+            username = registrationPage.registerNewUser("instructor_", password);
 
-                UsersDB usersDB = new UsersDB(this.jsonConfig);
-                usersDB.grantUserRole(username, instructorRoleID);
-            }
-        }
+            String instructorRoleID = JSONResReader.readProperty(this.data, "common.instructorRoleID");
+            usersDB.grantUserRole(username, instructorRoleID);
+        } else
 
         login = new LoginPage(driver, this.getAppURL());
         login.login(username, password);
@@ -64,16 +55,14 @@ public class CreateCourseTC extends TestBase {
         HomePage home = new HomePage(driver, this.getAppURL());
         home.clickBtn(home.course);
         home.clickBtn(home.newCourse);
+
         return username;
     }
 
-    private String loginToCreateCoursePage() throws SQLException, ClassNotFoundException, IOException, ParseException, InterruptedException {
-        return loginToCreateCoursePage(null, null);
-    }
 
     @Test(priority = 1)
     public void createNewCourseUsingValidData(ITestContext context, Method method) throws Exception {
-        String username = this.loginToCreateCoursePage();
+        String username = this.loginToCreateCoursePage(null);
 
         JSONObject tcData = (JSONObject) this.data.get("createCourse");
         NewCoursePage coursePage = new NewCoursePage(driver);
@@ -102,9 +91,7 @@ public class CreateCourseTC extends TestBase {
         String username = (String) context.getAttribute("username");
         String courseTitle = (String) context.getAttribute("courseTitle");
 
-        JSONObject corDBParams = (JSONObject) JSONResReader.readJSONResource(CourseFileNames.COURSE_DATABASE_PARAMS);
-        String password = JSONResReader.readProperty(corDBParams,"users.password");
-        this.loginToCreateCoursePage(username, password);
+        this.loginToCreateCoursePage(username);
 
         JSONObject tcData = (JSONObject) this.data.get("validateDuplicateCourseWithSameInstructor");
         NewCoursePage coursePage = new NewCoursePage(driver);
@@ -124,21 +111,14 @@ public class CreateCourseTC extends TestBase {
 
     @Test(priority = 3, dependsOnMethods = "createNewCourseUsingValidData")
     public void validateMaxLimitOfCreateNewCourses() throws Exception {
-        String username = this.loginToCreateCoursePage();
+        this.loginToCreateCoursePage(null);
 
-        JSONObject corDBParams = (JSONObject) JSONResReader.readJSONResource(CourseFileNames.COURSE_DATABASE_PARAMS);
-        String maxLimitConfigID = JSONResReader.readProperty(corDBParams, "systemConfigs.maxLimitOfNewCourseID");
+        String maxLimitConfigID = JSONResReader.readProperty(this.data, "common.maxLimitOfNewCourseID");
+        Integer maxLimit = Integer.parseInt(maxLimitConfigID);
 
-        Integer maxLimit = db.getMaxLimitOfNewCourseConfiguration(maxLimitConfigID);
-
-        Integer userID = usersDB.getUserID(username);
-        Integer count = db.countOfUnCompletedCourses(userID.toString());
-
-        Integer diff = maxLimit - count;
         NewCoursePage coursePage = new NewCoursePage(driver);
-
         JSONObject tcData = (JSONObject) this.data.get("tc-validateMaxLimitOfCreateNewCourses");
-        for(int i=0; i<diff; i++){
+        for(int i=0; i<maxLimit; i++){
             coursePage.setRandomCourseTitle();
             coursePage.setInputValue(coursePage.duration, (String) tcData.get("duration"));
             coursePage.setInputValue(coursePage.categoryName, (String) tcData.get("categoryName"));
@@ -170,13 +150,13 @@ public class CreateCourseTC extends TestBase {
         coursePage.setFutureDateForExpectedFinishedDate();
 
         coursePage.clickBtn(coursePage.btnCreate);
-
         this.assertAlertError((String) tcData.get("expectedAlertErrMsg"));
     }
 
     @Test(priority = 4)
     public void createNewCourseUsingInValidData() throws Exception {
-        this.loginToCreateCoursePage();
+        String username = JSONResReader.readProperty(this.data, "instructorUser.username");
+        this.loginToCreateCoursePage(username);
 
         JSONArray tcDataArray = (JSONArray) this.data.get("CreateCourseWithInvalidData");
         for (int i = 0; i < tcDataArray.size(); i++) {
@@ -206,7 +186,8 @@ public class CreateCourseTC extends TestBase {
 
     @Test(priority = 5)
     public void validateMandatoryField() throws Exception {
-        this.loginToCreateCoursePage();
+        String username = JSONResReader.readProperty(this.data, "instructorUser.username");
+        this.loginToCreateCoursePage(username);
 
         NewCoursePage coursePage = new NewCoursePage(driver);
         coursePage.clickBtn(coursePage.btnCreate);
@@ -221,7 +202,8 @@ public class CreateCourseTC extends TestBase {
 
     @Test(priority = 6)
     public void validateDurationFieldWithDecimalValue() throws Exception {
-        this.loginToCreateCoursePage();
+        String username = JSONResReader.readProperty(this.data, "instructorUser.username");
+        this.loginToCreateCoursePage(username);
 
         JSONObject tcData = (JSONObject) this.data.get("validateDurationField");
         NewCoursePage coursePage = new NewCoursePage(driver);

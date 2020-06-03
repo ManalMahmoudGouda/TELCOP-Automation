@@ -1,4 +1,9 @@
 {
+  "common":{
+    "instructorRoleID": "22",
+    "usersPassword": "12345678",
+    "maxLimitOfNewCourseID": "3"
+  },
   "instructorUser": {
     "userID": "1",
     "userName": "ahmed.motair",

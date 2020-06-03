@@ -12,6 +12,7 @@ public class JDBCAdapter {
     private Connection dorrarConnection;
 
     public JDBCAdapter(JSONObject config) throws SQLException, ClassNotFoundException {
+        //Check if the Database Connection isn't Open then create the connection
         if(this.userIDConnection == null || this.userIDConnection.isClosed())
             this.userIDConnection = this.createUserIDConnection(config);
 

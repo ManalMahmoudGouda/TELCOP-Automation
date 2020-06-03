@@ -52,7 +52,7 @@ public class NewCoursePage extends PageBase {
     }
 
     public String setRandomCourseTitle() {
-        SimpleDateFormat sdf = new SimpleDateFormat("ddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmmss");
         Faker faker = new Faker();
         String courseTitle = faker.educator().course() + sdf.format(new Date());
         setInputValue(this.courseTitle, courseTitle);
